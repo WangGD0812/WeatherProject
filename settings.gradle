@@ -1,0 +1,22 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+    plugins {
+        id 'com.android.tools.build' version ":gradle:7.1.1"
+        id 'com.android.application' version "7.1.3" apply false
+        id 'com.android.library' version "7.1.3" apply false
+        id 'org.jetbrains.kotlin.android' version "1.6.10" apply false
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "WeatherProject"
+include ':app'
