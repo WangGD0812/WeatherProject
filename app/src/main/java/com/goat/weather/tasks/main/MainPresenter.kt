@@ -37,7 +37,7 @@ class MainPresenter : MainContract.Presenter() {
             .getWeatherData(ApiHeader.getCommonHeader(), lat, lon, time, requestParam)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : BaseObserver<WheaterDataModel>() {
+            .subscribe(object : BaseObserver<WheaterDataModel?>() {
                 override fun onSuccess(data: WheaterDataModel?) {
                     data?.daily?.data?.get(0)?.let {
                         mView?.loadCurrentDayData(it)
