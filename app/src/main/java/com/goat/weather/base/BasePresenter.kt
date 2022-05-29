@@ -5,15 +5,15 @@ package com.goat.weather.base
  */
 open class BasePresenter<T: IView> : IPresenter<T> {
 
-    var mIView: T? = null
+    var mView: T? = null
         private set
 
     override fun attachView(mIView: T) {
-        this.mIView = mIView
+        this.mView = mIView
     }
 
     override fun detachView() {
-        mIView = null
+        mView = null
     }
 
 

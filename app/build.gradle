@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.android.extensions'
+    id 'org.jetbrains.kotlin.kapt'
 }
 
 android {
@@ -43,7 +45,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // okhttp
-    api "com.squareup.okhttp3:logging-interceptor:3.11.0"
     api "com.squareup.okhttp3:okhttp:3.11.0"
 
     // rxjava
@@ -55,4 +56,8 @@ dependencies {
     api "com.squareup.retrofit2:converter-gson:2.4.0"
     api "com.squareup.retrofit2:converter-scalars:2.4.0"
     api "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
+
+    // Dagger
+    implementation 'com.google.dagger:dagger:2.42'
+    kapt 'com.google.dagger:dagger-compiler:2.42'
 }

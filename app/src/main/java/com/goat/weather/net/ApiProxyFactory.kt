@@ -12,9 +12,10 @@ import java.util.concurrent.TimeUnit
 
 object ApiProxyFactory {
 
+    private const val TIME_OUT: Long = 10
     private val proxies = ConcurrentHashMap<String, Any>()
     private const val SECRET_KEY = "37788829244c9eb24dfea7e860e00e69"
-    private const val BASE_URL: String = "https://api.darksky.net/forecast/${SECRET_KEY}"
+    private const val BASE_URL: String = "https://api.darksky.net/forecast/${SECRET_KEY}/"
 
     @JvmOverloads
     fun <T> getProxy(api: Class<T>,
@@ -38,9 +39,9 @@ object ApiProxyFactory {
 
     private fun getOkHttpClient(interceptors: Array<Interceptor>?): OkHttpClient {
         val okHttpBuilder = OkHttpClient().newBuilder()
-        okHttpBuilder.connectTimeout(10, TimeUnit.SECONDS)
-        okHttpBuilder.writeTimeout(10, TimeUnit.SECONDS)
-        okHttpBuilder.readTimeout(10, TimeUnit.SECONDS)
+        okHttpBuilder.connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+        okHttpBuilder.writeTimeout(TIME_OUT, TimeUnit.SECONDS)
+        okHttpBuilder.readTimeout(TIME_OUT, TimeUnit.SECONDS)
         if (interceptors != null) {
             for (interceptor in interceptors) {
                 okHttpBuilder.addInterceptor(interceptor)
