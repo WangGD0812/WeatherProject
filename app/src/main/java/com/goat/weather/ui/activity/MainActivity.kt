@@ -7,13 +7,11 @@ import com.goat.weather.base.BaseActivity
 
 class MainActivity: BaseActivity() {
 
+    override val layoutId: Int
+        get() = R.layout.activity_main
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
-    override fun initPageLayoutID(): Int {
-        return R.layout.activity_main
-    }
-
 
 }
