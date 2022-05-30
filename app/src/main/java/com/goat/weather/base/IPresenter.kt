@@ -1,6 +1,6 @@
 package com.goat.weather.base
 
-interface IPresenter<in V: IView> {
+interface IPresenter<in V: IBaseView> {
 
     /**
      * interact with View
@@ -8,7 +8,7 @@ interface IPresenter<in V: IView> {
     fun attachView(view: V)
 
     /**
-     * release resources
+     * free resources
      */
     fun detachView()
 

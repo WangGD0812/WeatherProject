@@ -26,7 +26,7 @@ abstract class BaseObserver<T>: Observer<T> {
     private var errorCode = -9999
     private var errorMsg = "Unknown error"
 
-    abstract fun onSuccess(data: T?)
+    abstract fun onSuccess(data: T)
 
     abstract fun onFailure(code: Int, errorMsg: String?)
 
@@ -38,15 +38,15 @@ abstract class BaseObserver<T>: Observer<T> {
         return data != null
     }
 
-    override fun onNext(responseData: T) {
-        if (validateData(responseData)) {
+    override fun onNext(data: T) {
+        if (validateData(data)) {
             try {
-                onSuccess(responseData)
+                onSuccess(data)
             } catch (e: Exception) {
                 onError(e)
             }
         } else {
-            onFailure(RESPONSE_DATA_NULL, "response data is null.")
+            onFailure(RESPONSE_DATA_NULL, "response data is Empty")
         }
     }
 
@@ -84,7 +84,7 @@ abstract class BaseObserver<T>: Observer<T> {
                 errorMsg = "Runtime Exception"
             }
         }
-        //TODO()
+
         onFailure(errorCode, errorMsg)
     }
 

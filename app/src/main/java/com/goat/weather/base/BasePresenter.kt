@@ -3,17 +3,17 @@ package com.goat.weather.base
 /**
  * The base class for all Presenter
  */
-open class BasePresenter<T: IView> : IPresenter<T> {
+open class BasePresenter<T: IBaseView> : IPresenter<T> {
 
-    var mView: T? = null
+    var mIView: T? = null
         private set
 
     override fun attachView(mIView: T) {
-        this.mView = mIView
+        this.mIView = mIView
     }
 
     override fun detachView() {
-        mView = null
+        mIView = null
     }
 
 
