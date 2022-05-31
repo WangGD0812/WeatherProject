@@ -4,7 +4,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.ConcurrentHashMap
@@ -30,7 +30,7 @@ object ApiProxyFactory {
             .client(getOkHttpClient(interceptors))
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(jsonConverterFactory ?: GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
         val proxy = client.create(api)
         proxies[key] = proxy as Any

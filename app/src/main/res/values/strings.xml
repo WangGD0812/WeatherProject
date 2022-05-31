@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WeatherProject</string>
+
+    <string name="error_display_msg_server_exception">The server is exception, please try again later.</string>
+    <string name="error_display_msg_network_connection_exception">The network connection is exception, please check the network.</string>
+    <string name="pls_allow_location_permission">Please allow you to obtain location permission,otherwise,you will not be able to obtain weather data.</string>
 </resources>

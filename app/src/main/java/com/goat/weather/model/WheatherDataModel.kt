@@ -1,6 +1,6 @@
 package com.goat.weather.model
 
-data class WheaterDataModel(
+data class WheatherDataModel(
     val latitude: Double?,
     val longitude: Double?,
     val timezone: String?,
