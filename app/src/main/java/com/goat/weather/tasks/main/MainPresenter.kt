@@ -42,8 +42,8 @@ class MainPresenter @Inject constructor(): MainContract.Presenter(), LocationLis
     private var rxPermissions: RxPermissions? = null
     private var locationManager: LocationManager? = null
     private var locationProvider: String? = null
-    private var longitude: Double? = null
-    private var latitude: Double? = null
+    var longitude: Double? = null
+    var latitude: Double? = null
     private var mWeakReference: WeakReference<Activity>? = null
     private var hourDataList: ArrayList<HourDataModel>? = null
 
