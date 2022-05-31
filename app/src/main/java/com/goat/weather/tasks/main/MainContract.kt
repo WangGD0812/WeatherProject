@@ -1,6 +1,5 @@
 package com.goat.weather.tasks.main
 
-import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.goat.weather.base.BasePresenter
 import com.goat.weather.base.IBaseView
@@ -15,10 +14,18 @@ object MainContract {
     }
 
     abstract class Presenter: BasePresenter<IView>() {
+
+        /**
+         * request weather api to get data
+         */
+        abstract fun requestWeatherData(activity: FragmentActivity)
+
         /**
          * Get the location permission grant status, if not granted, apply for permission.
          */
         abstract fun requestLocationPermission(activity: FragmentActivity)
+
+        abstract fun jumpToHourlyDetailsPage()
     }
 
 }

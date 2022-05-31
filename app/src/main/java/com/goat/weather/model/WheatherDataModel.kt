@@ -4,7 +4,7 @@ data class WheatherDataModel(
     val latitude: Double?,
     val longitude: Double?,
     val timezone: String?,
-    val hourly: HourDataModel?,
+    val hourly: HourlyModel?,
     val daily: DailyModel?,
     val offset: Int?
 )

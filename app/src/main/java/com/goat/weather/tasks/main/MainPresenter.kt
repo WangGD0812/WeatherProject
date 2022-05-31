@@ -3,21 +3,23 @@ package com.goat.weather.tasks.main
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
+import android.content.Intent
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import autodispose2.AutoDispose
 import autodispose2.androidx.lifecycle.AndroidLifecycleScopeProvider
 import com.goat.weather.R
 import com.goat.weather.model.Blocks
+import com.goat.weather.model.HourDataModel
 import com.goat.weather.model.WheatherDataModel
 import com.goat.weather.net.ApiHeader
 import com.goat.weather.net.BaseObserver
 import com.goat.weather.net.RetrofitModule
 import com.goat.weather.net.WeatherApiService
+import com.goat.weather.tasks.Constants
+import com.goat.weather.tasks.details.HourlyDetailsActivity
 import com.goat.weather.utils.DateUtil
 import com.goat.weather.utils.LocationUtil
 import com.goat.weather.utils.NetWorkUtil
@@ -25,7 +27,6 @@ import com.goat.weather.utils.StringUtil
 import com.tbruyelle.rxpermissions3.RxPermissions
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.lang.NullPointerException
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -34,14 +35,8 @@ class MainPresenter @Inject constructor(): MainContract.Presenter(), LocationLis
 
     companion object {
         private const val KEY_EXCLUDE = "exclude"
-        private const val KEY_LANG = "lang"
         private const val KEY_UNITS = "units"
-
-        private const val LANG_ZH = "zh"
         private const val UNIT_AUTO = "auto"
-
-        private const val DISPLAY_MSG_PLEASE_CHECK_NETWORK = R.string.error_display_msg_network_connection_exception
-        private const val DISPLAY_MSG_PLEASE_ALLOW_LOCATION_PERMISSION = R.string.pls_allow_location_permission
     }
 
     private var rxPermissions: RxPermissions? = null
@@ -50,14 +45,15 @@ class MainPresenter @Inject constructor(): MainContract.Presenter(), LocationLis
     private var longitude: Double? = null
     private var latitude: Double? = null
     private var mWeakReference: WeakReference<Activity>? = null
+    private var hourDataList: ArrayList<HourDataModel>? = null
 
     override fun requestLocationPermission(activity: FragmentActivity) {
         if (!NetWorkUtil.isConnected(activity)) {
-            mIView?.loadDataFailed(DISPLAY_MSG_PLEASE_CHECK_NETWORK)
+            mIView?.loadDataFailed(Constants.DISPLAY_MSG_PLEASE_CHECK_NETWORK)
             return
         }
         mWeakReference = WeakReference(activity)
-        var activity = mWeakReference?.get() as FragmentActivity
+        val activity = mWeakReference?.get() as FragmentActivity
         if (LocationUtil.isLocationPermissionGranted(activity)) {
             requestLocation(activity)
         } else {
@@ -72,7 +68,7 @@ class MainPresenter @Inject constructor(): MainContract.Presenter(), LocationLis
                         permission.granted -> {
                             requestLocation(activity)
                         } else -> {
-                            mIView?.showLocationDisallow(DISPLAY_MSG_PLEASE_ALLOW_LOCATION_PERMISSION)
+                            mIView?.showLocationDisallow(Constants.DISPLAY_MSG_PLEASE_ALLOW_LOCATION_PERMISSION)
                         }
                     }
                 }
@@ -87,7 +83,7 @@ class MainPresenter @Inject constructor(): MainContract.Presenter(), LocationLis
         if (StringUtil.isEmpty(locationProvider)) {
             locationProvider = locationManager?.let { LocationUtil.getLocationProvider(it) }
         }
-        var location: Location? = locationProvider?.let { locationManager?.getLastKnownLocation(it) }
+        val location: Location? = locationProvider?.let { locationManager?.getLastKnownLocation(it) }
         if (location != null) {
             longitude = location.longitude
             latitude = location.latitude
@@ -99,7 +95,7 @@ class MainPresenter @Inject constructor(): MainContract.Presenter(), LocationLis
     }
 
     override fun onLocationChanged(location: Location) {
-        if (null != location) {
+        if (location != null) {
             longitude = location.longitude
             latitude = location.latitude
             requestWeatherData(mWeakReference?.get() as FragmentActivity)
@@ -115,9 +111,19 @@ class MainPresenter @Inject constructor(): MainContract.Presenter(), LocationLis
         mWeakReference = null
     }
 
-    private fun requestWeatherData(activity: FragmentActivity) {
-        if (latitude == null || longitude == null) {
-            mIView?.loadDataFailed(DISPLAY_MSG_PLEASE_ALLOW_LOCATION_PERMISSION)
+    override fun jumpToHourlyDetailsPage() {
+        val activity = mWeakReference?.get()
+        if (activity != null && hourDataList != null) {
+            val intent = Intent(activity, HourlyDetailsActivity::class.java).apply {
+                putParcelableArrayListExtra(Constants.KEY_INTENT_HOUR_DATA_LIST, hourDataList!!)
+            }
+            activity.startActivity(intent)
+        }
+    }
+
+    override fun requestWeatherData(activity: FragmentActivity) {
+        if (null == latitude || null == longitude) {
+            mIView?.loadDataFailed(Constants.DISPLAY_MSG_PLEASE_NO_LOCATION_INFO_WAS_OBTAINED)
             return
         }
         val time: Long = DateUtil.getTimestampSeconds()
@@ -133,11 +139,12 @@ class MainPresenter @Inject constructor(): MainContract.Presenter(), LocationLis
             .to(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(activity)))
             .subscribe(object : BaseObserver<WheatherDataModel>() {
                 override fun onSuccess(data: WheatherDataModel) {
-                    var dayData = data.daily?.data?.get(0)
+                    val dayData = data.daily?.data?.get(0)
+                    hourDataList = data.hourly?.data
                     if (dayData != null) {
                         mIView?.loadCurrentDayData(dayData)
                     } else {
-                        mIView?.loadDataFailed(DISPLAY_MSG_SERVER_EXCEPTION)
+                        mIView?.loadDataFailed(Constants.DISPLAY_MSG_DATA_EXCEPTION)
                     }
                 }
 

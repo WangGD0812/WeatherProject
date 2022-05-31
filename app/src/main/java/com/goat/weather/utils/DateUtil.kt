@@ -6,6 +6,8 @@ import java.util.*
 object DateUtil {
 
     const val TIME_WITH_FORMAT = "yyyy-MM-dd"
+    const val TIME_WITH_HOUR_FORMAT = "HH"
+    const val TIME_WITH_HOUR_MINUTES_FORMAT = "HH:mm"
 
     /**
      * Timestamp to date

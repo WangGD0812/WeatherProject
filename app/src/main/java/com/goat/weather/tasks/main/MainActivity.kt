@@ -18,13 +18,19 @@ class MainActivity: BaseActivity<MainPresenter, MainContract.IView>(), MainContr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mPresenter.requestLocationPermission(this)
+        mPresenter?.requestLocationPermission(this)
+        initListener()
+    }
+
+    private fun initListener() {
+        layoutDay.setOnClickListener {
+            mPresenter?.jumpToHourlyDetailsPage()
+        }
     }
 
     override fun loadCurrentDayData(data: DayDataModel) {
-        var imgName = if (data.icon?.contains("-") == true) data.icon?.replace("-", "_") else data.icon
-        if (!StringUtil.isEmpty(imgName)) {
-            var drawableResId = ResourceUtil.getMipmapResId("ic_$imgName", applicationContext)
+        if (!StringUtil.isEmpty(data.icon)) {
+            var drawableResId = ResourceUtil.getMipmapResId(data.icon!!, applicationContext)
             if (drawableResId ?: 0 > 0) {
                 ivWeatherIcon.setImageResource(drawableResId!!)
             }

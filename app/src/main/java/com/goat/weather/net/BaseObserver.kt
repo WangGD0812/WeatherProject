@@ -3,6 +3,7 @@ package com.goat.weather.net
 import android.util.Log
 import com.goat.weather.BuildConfig
 import com.goat.weather.R
+import com.goat.weather.tasks.Constants
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
 
@@ -10,7 +11,6 @@ abstract class BaseObserver<T>: Observer<T> {
 
     companion object {
         const val TAG = "WeatherProject"
-        const val DISPLAY_MSG_SERVER_EXCEPTION = R.string.error_display_msg_server_exception
     }
 
     abstract fun onSuccess(data: T)
@@ -33,7 +33,7 @@ abstract class BaseObserver<T>: Observer<T> {
                 onError(e)
             }
         } else {
-            onFailure(DISPLAY_MSG_SERVER_EXCEPTION)
+            onFailure(Constants.DISPLAY_MSG_SERVER_EXCEPTION)
         }
     }
 
@@ -43,7 +43,7 @@ abstract class BaseObserver<T>: Observer<T> {
                 Log.e(TAG, it)
             }
         }
-        onFailure(DISPLAY_MSG_SERVER_EXCEPTION)
+        onFailure(Constants.DISPLAY_MSG_SERVER_EXCEPTION)
     }
 
 }
