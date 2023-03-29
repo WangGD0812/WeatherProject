@@ -1,7 +1,9 @@
 package com.goat.weather.net
 
+import okhttp3.Callback
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
@@ -14,14 +16,14 @@ object ApiProxyFactory {
 
     private const val TIME_OUT: Long = 10
     private val proxies = ConcurrentHashMap<String, Any>()
-    private const val SECRET_KEY = "37788829244c9eb24dfea7e860e00e69"
-    private const val BASE_URL: String = "https://api.darksky.net/forecast/${SECRET_KEY}/"
+    private const val SECRET_KEY = "c6d98f6ac7b4c0e2ab2d14928caae865"
+   // private const val BASE_URL: String = "https://api.darksky.net/forecast/${SECRET_KEY}/"
+   private const val BASE_URL: String = "https://restapi.amap.com/v3/weather/weatherInfo"
 
-    @JvmOverloads
-    fun <T> getProxy(api: Class<T>,
+    fun <T> getProxy(serviceClass: Class<T>,
                      interceptors: Array<Interceptor>? = null,
                      jsonConverterFactory: Converter.Factory? = null): T {
-        val key = BASE_URL + api.name
+        val key = BASE_URL + serviceClass.name
         if (proxies.containsKey(key)) {
             return proxies[key] as T
         }
@@ -32,7 +34,7 @@ object ApiProxyFactory {
             .addConverterFactory(jsonConverterFactory ?: GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
-        val proxy = client.create(api)
+        val proxy = client.create(serviceClass)
         proxies[key] = proxy as Any
         return proxy
     }
@@ -47,6 +49,9 @@ object ApiProxyFactory {
                 okHttpBuilder.addInterceptor(interceptor)
             }
         }
+        var request = Request.Builder().url("").build()
+        var call = okHttpBuilder.build().newCall(request)
+        var result = call.execute()
         return okHttpBuilder.build()
     }
 

@@ -22,8 +22,9 @@
         android:theme="@style/Theme.WeatherProject">
 
         <activity
-            android:name=".tasks.main.MainActivity"
-            android:screenOrientation="portrait">
+            android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,7 +32,7 @@
         </activity>
 
         <activity
-            android:name=".tasks.details.HourlyDetailsActivity"
+            android:name=".ui.details.WeatherDetailsActivity"
             android:screenOrientation="portrait" />
 
     </application>

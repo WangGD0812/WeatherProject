@@ -1,42 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/layoutDay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <data>
 
-        <ImageView
-            android:id="@+id/ivWeatherIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <variable
+            name="mainViewModel"
+            type="com.goat.weather.domain.MainViewModel" />
 
-        <TextView
-            android:id="@+id/tvTemperature"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginTop="5dp"/>
+        <variable
+            name="item"
+            type="com.goat.weather.data.model.CityInfoModel" />
 
-        <TextView
-            android:id="@+id/tvTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:layout_marginTop="5dp" />
+    </data>
 
-    </LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_city_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBaseline_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:data="@{mainViewModel.cityList}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:itemLayout="@{@layout/layout_item_city_list}"
+            app:itemClick="@{(item, position)-> mainViewModel.onItemClick(item)}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
+
+
