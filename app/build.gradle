@@ -57,7 +57,6 @@ dependencies {
 
     // Okhttp
     implementation 'com.squareup.okhttp3:okhttp:3.14.9'
-    //ddddd
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
