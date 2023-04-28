@@ -1,0 +1,12 @@
+apply plugin: 'auto-register'
+
+autoregister {
+    registerInfo = [
+            [
+                    'scanInterface'             : 'com.goat.weather.init.InitTask'
+                    , 'codeInsertToClassName'   : 'com.goat.weather.WeatherApplication'
+                    , 'registerMethodName'      : 'registerInit'
+                    , 'exclude'                 : []
+            ]
+    ]
+}

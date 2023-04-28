@@ -17,7 +17,7 @@ class RetrofitModule private constructor(): Serializable {
         return SingletonHolder.mInstance
     }
 
-    fun <T> create(service: Class<T>): T {
-        return ApiProxyFactory.getProxy(service)
+    fun <T> create(serviceClass: Class<T>): T {
+        return ApiProxyFactory.getProxy(serviceClass)
     }
 }
